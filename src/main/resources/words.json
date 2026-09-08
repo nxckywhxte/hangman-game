@@ -1,0 +1,29 @@
+{
+  "animals": [
+    "CAT",
+    "DOG",
+    "ELEPHANT",
+    "GIRAFFE",
+    "LION",
+    "TIGER",
+    "ZEBRA"
+  ],
+  "countries": [
+    "FRANCE",
+    "GERMANY",
+    "JAPAN",
+    "BRAZIL",
+    "CANADA",
+    "AUSTRALIA",
+    "INDIA"
+  ],
+  "programming": [
+    "JAVA",
+    "PYTHON",
+    "KOTLIN",
+    "RUST",
+    "GO",
+    "SWIFT",
+    "TYPESCRIPT"
+  ]
+}
