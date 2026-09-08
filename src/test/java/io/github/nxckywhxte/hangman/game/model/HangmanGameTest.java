@@ -1,10 +1,17 @@
 package io.github.nxckywhxte.hangman.game.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import io.github.nxckywhxte.hangman.game.model.guess.GuessResult;
+import io.github.nxckywhxte.hangman.game.model.guess.GuessStatus;
+import io.github.nxckywhxte.hangman.game.model.state.InProgress;
+import io.github.nxckywhxte.hangman.game.model.state.Lost;
+import io.github.nxckywhxte.hangman.game.model.state.Won;
 
 class HangmanGameTest {
   private HangmanGame game;
@@ -137,6 +144,42 @@ class HangmanGameTest {
     assertThat(result.status()).isEqualTo(GuessStatus.GAME_ALREADY_FINISHED);
     assertThat(result.newGame().state()).isInstanceOf(Lost.class);
     assertThat(result.newGame()).isEqualTo(game);
+  }
+
+  @Test
+  @DisplayName("Should return masked word with only guessed letters revealed")
+  void shouldReturnMaskedWordWithOnlyGuessedLettersRevealed() {
+    game = game.guessLetter('A').newGame();
+
+    String masked = game.getMaskedWord();
+
+    assertThat(masked).isEqualTo("_ A _ A");
+  }
+
+  @Test
+  @DisplayName("Should return fully revealed word when all letters guessed")
+  void shouldReturnFullyRevealedWordWhenAllLettersGuessed() {
+    game = game.guessLetter('J').newGame();
+    game = game.guessLetter('A').newGame();
+    game = game.guessLetter('V').newGame();
+
+    assertThat(game.getMaskedWord()).isEqualTo("J A V A");
+  }
+
+  @Test
+  @DisplayName("Should throw exception for empty secret word")
+  void shouldThrowExceptionForEmptySecretWord() {
+    assertThatThrownBy(() -> HangmanGame.create("", Difficulty.MEDIUM))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Secret word cannot be empty");
+  }
+
+  @Test
+  @DisplayName("Should throw exception for word with spaces")
+  void shouldThrowExceptionForWordWithSpaces() {
+    assertThatThrownBy(() -> HangmanGame.create("HELLO WORLD", Difficulty.MEDIUM))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Secret word cannot contain spaces");
   }
 
   private HangmanGame createDefaultGame() {

@@ -1,4 +1,4 @@
-package io.github.nxckywhxte.hangman.game.model;
+package io.github.nxckywhxte.hangman.game.model.guess;
 
 public enum GuessStatus {
   CORRECT,

@@ -6,4 +6,10 @@ public record Difficulty(DifficultyName name, int maxErrors, String description)
   public static final Difficulty MEDIUM =
       new Difficulty(DifficultyName.MEDIUM, 7, "7 errors allowed");
   public static final Difficulty HARD = new Difficulty(DifficultyName.HARD, 5, "5 errors allowed");
+
+  public enum DifficultyName {
+    EASY,
+    MEDIUM,
+    HARD
+  }
 }

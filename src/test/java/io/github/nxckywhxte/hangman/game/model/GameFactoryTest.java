@@ -2,7 +2,6 @@ package io.github.nxckywhxte.hangman.game.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.github.nxckywhxte.hangman.game.exception.WordSourceException;
+import io.github.nxckywhxte.hangman.game.model.state.InProgress;
 import io.github.nxckywhxte.hangman.game.model.word.InMemoryWordSource;
 import io.github.nxckywhxte.hangman.game.model.word.WordSource;
 

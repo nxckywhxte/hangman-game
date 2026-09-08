@@ -2,10 +2,24 @@ package io.github.nxckywhxte.hangman.game.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import io.github.nxckywhxte.hangman.game.model.guess.GuessResult;
+import io.github.nxckywhxte.hangman.game.model.guess.GuessStatus;
+import io.github.nxckywhxte.hangman.game.model.state.GameState;
+import io.github.nxckywhxte.hangman.game.model.state.InProgress;
+import io.github.nxckywhxte.hangman.game.model.state.Lost;
+import io.github.nxckywhxte.hangman.game.model.state.Won;
 
 public record HangmanGame(
     String secretWord, Set<Character> guessedLetters, int errors, int maxErrors, GameState state) {
   public HangmanGame {
+    if (secretWord == null || secretWord.isEmpty()) {
+      throw new IllegalArgumentException("Secret word cannot be empty");
+    }
+    if (secretWord.contains(" ")) {
+      throw new IllegalArgumentException("Secret word cannot contain spaces");
+    }
     guessedLetters = Set.copyOf(guessedLetters);
   }
 
@@ -55,5 +69,13 @@ public record HangmanGame(
         new HangmanGame(secretWord, Set.copyOf(newGuessedLetters), newErrors, maxErrors, newState);
 
     return new GuessResult(status, newGame);
+  }
+
+  public String getMaskedWord() {
+    return secretWord
+        .chars()
+        .mapToObj(c -> (char) c)
+        .map(c -> guessedLetters.contains(c) ? c.toString() : "_")
+        .collect(Collectors.joining(" "));
   }
 }
