@@ -79,6 +79,15 @@ class HangmanGameTest {
     assertThat(result.newGame().guessedLetters()).contains('J'); // Должна быть 'J'
   }
 
+  @Test
+  @DisplayName("Game should be won when all unique letters are guessed")
+  void gameShouldBeWonWhenAllUniqueLettersAreGuessed() {
+    game = game.guessLetter('J').newGame();
+    game = game.guessLetter('A').newGame();
+    game = game.guessLetter('V').newGame();
+    assertThat(game.state()).isInstanceOf(Won.class);
+  }
+
   private HangmanGame createDefaultGame() {
     return HangmanGame.create("JAVA", Difficulty.MEDIUM);
   }
