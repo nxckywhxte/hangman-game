@@ -14,28 +14,33 @@ public record HangmanGame(
   }
 
   public GuessResult guessLetter(char letter) {
-    // 1. Нормализация регистра
+    // 1. Проверка: игра уже закончена?
+    if (!(state instanceof InProgress)) {
+      return new GuessResult(GuessStatus.GAME_ALREADY_FINISHED, this);
+    }
+
+    // 2. Нормализация регистра
     char upperLetter = Character.toUpperCase(letter);
 
-    // 2. Проверяем, была ли буква уже угадана
+    // 3. Проверяем, была ли буква уже угадана
     if (guessedLetters.contains(upperLetter)) {
       return new GuessResult(GuessStatus.ALREADY_GUESSED, this);
     }
 
-    // 3. Добавляем букву в список угаданных
+    // 4. Добавляем букву в список угаданных
     Set<Character> newGuessedLetters = new HashSet<>(guessedLetters);
     newGuessedLetters.add(upperLetter);
 
-    // 4. Проверяем есть ли буква в секретном слове
+    // 5. Проверяем есть ли буква в секретном слове
     boolean isCorrect = secretWord.contains(String.valueOf(upperLetter));
 
-    // 5. Вычисляем новые ошибки
+    // 6. Вычисляем новые ошибки
     int newErrors = isCorrect ? errors : errors + 1;
 
-    // 6. Определяем статус
+    // 7. Определяем статус
     GuessStatus status = isCorrect ? GuessStatus.CORRECT : GuessStatus.WRONG;
 
-    // 7. Проверка поражения и победы
+    // 8. Проверка поражения и победы
     GameState newState;
     if (newErrors >= maxErrors) {
       newState = new Lost();
@@ -45,7 +50,7 @@ public record HangmanGame(
       newState = state;
     }
 
-    // 8. Создаем новую игру
+    // 9. Создаем новую игру
     HangmanGame newGame =
         new HangmanGame(secretWord, Set.copyOf(newGuessedLetters), newErrors, maxErrors, newState);
 

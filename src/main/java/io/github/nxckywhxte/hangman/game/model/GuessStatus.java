@@ -4,4 +4,5 @@ public enum GuessStatus {
   CORRECT,
   WRONG,
   ALREADY_GUESSED,
+  GAME_ALREADY_FINISHED,
 }

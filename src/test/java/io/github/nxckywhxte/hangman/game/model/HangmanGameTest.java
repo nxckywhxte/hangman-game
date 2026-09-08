@@ -103,6 +103,42 @@ class HangmanGameTest {
     assertThat(game.errors()).isEqualTo(7);
   }
 
+  @Test
+  @DisplayName("Guessing letters after winning should return GAME_ALREADY_FINISHED status")
+  void guessingLettersAfterWinningShouldReturnGameAlreadyFinishedStatus() {
+    game = game.guessLetter('J').newGame();
+    game = game.guessLetter('A').newGame();
+    game = game.guessLetter('V').newGame();
+    // Теперь игра в состоянии Won
+
+    // Пытаемся угадать ещё букву
+    GuessResult result = game.guessLetter('X');
+
+    // Должен вернуться статус GAME_ALREADY_FINISHED
+    assertThat(result.status()).isEqualTo(GuessStatus.GAME_ALREADY_FINISHED);
+    // Состояние игры не должно измениться
+    assertThat(result.newGame().state()).isInstanceOf(Won.class);
+    assertThat(result.newGame()).isEqualTo(game);
+  }
+
+  @Test
+  @DisplayName("Guessing letters after losing should return GAME_ALREADY_FINISHED status")
+  void guessingLettersAfterLosingShouldReturnGameAlreadyFinishedStatus() {
+    char[] wrongLetters = {'Q', 'W', 'R', 'T', 'Y', 'U', 'I'};
+    for (char wrongLetter : wrongLetters) {
+      game = game.guessLetter(wrongLetter).newGame();
+    }
+    // Теперь игра в состоянии Lost
+
+    // Пытаемся угадать ещё букву
+    GuessResult result = game.guessLetter('A');
+
+    // Должен вернуться статус GAME_ALREADY_FINISHED
+    assertThat(result.status()).isEqualTo(GuessStatus.GAME_ALREADY_FINISHED);
+    assertThat(result.newGame().state()).isInstanceOf(Lost.class);
+    assertThat(result.newGame()).isEqualTo(game);
+  }
+
   private HangmanGame createDefaultGame() {
     return HangmanGame.create("JAVA", Difficulty.MEDIUM);
   }
