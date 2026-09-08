@@ -1,0 +1,44 @@
+root = true
+
+# Настройки по умолчанию для всех файлов
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Java файлы (Google Java Style использует 2 пробела)
+[*.java]
+indent_size = 2
+
+# XML файлы (pom.xml, checkstyle.xml)
+[*.{xml,xml.bak}]
+indent_size = 2
+
+# YAML и JSON
+[*.{yml,yaml,json}]
+indent_size = 2
+
+# Markdown — не обрезаем trailing whitespace (там это имеет смысл)
+[*.md]
+trim_trailing_whitespace = false
+
+# Git hooks (shell scripts)
+[*.sh]
+end_of_line = lf
+indent_size = 2
+
+# Windows batch files
+[*.bat]
+end_of_line = crlf
+indent_size = 4
+
+# Makefile — только табы (требование make)
+[Makefile]
+indent_style = tab
+
+# Maven wrapper properties
+[*.properties]
+indent_size = 2
