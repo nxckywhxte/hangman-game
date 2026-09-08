@@ -31,13 +31,17 @@ public record HangmanGame(
     // 6. Определяем статус
     GuessStatus status = isCorrect ? GuessStatus.CORRECT : GuessStatus.WRONG;
 
-    // 7. Проверка победы: каждая буква слова есть в наборе угаданных
-    boolean isWon = secretWord.chars().allMatch(c -> newGuessedLetters.contains((char) c));
+    // 7. Проверка поражения и победы
+    GameState newState;
+    if (newErrors >= maxErrors) {
+      newState = new Lost();
+    } else if (secretWord.chars().allMatch(c -> newGuessedLetters.contains((char) c))) {
+      newState = new Won();
+    } else {
+      newState = state;
+    }
 
-    // 8. Выбор нового состояния
-    GameState newState = isWon ? new Won() : state;
-
-    // 9. Создаем новую игру
+    // 8. Создаем новую игру
     HangmanGame newGame =
         new HangmanGame(secretWord, Set.copyOf(newGuessedLetters), newErrors, maxErrors, newState);
 

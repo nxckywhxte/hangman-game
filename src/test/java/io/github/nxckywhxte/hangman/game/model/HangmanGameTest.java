@@ -88,6 +88,21 @@ class HangmanGameTest {
     assertThat(game.state()).isInstanceOf(Won.class);
   }
 
+  @Test
+  @DisplayName("Game should be lost when errors reach maxErrors")
+  void gameShouldBeLostWhenErrorsReachMaxErrors() {
+    char[] wrongGuessedLetters = {'Q', 'W', 'R', 'T', 'Y', 'U', 'I'};
+
+    // Делаем 7 неправильных попыток подряд
+    for (char wrongGuessedLetter : wrongGuessedLetters) {
+      game = game.guessLetter(wrongGuessedLetter).newGame();
+    }
+
+    // Состояние игры должно быть Lost
+    assertThat(game.state()).isInstanceOf(Lost.class);
+    assertThat(game.errors()).isEqualTo(7);
+  }
+
   private HangmanGame createDefaultGame() {
     return HangmanGame.create("JAVA", Difficulty.MEDIUM);
   }
