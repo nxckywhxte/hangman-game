@@ -5,6 +5,10 @@ import java.util.Set;
 
 public record HangmanGame(
     String secretWord, Set<Character> guessedLetters, int errors, int maxErrors, GameState state) {
+  public HangmanGame {
+    guessedLetters = Set.copyOf(guessedLetters);
+  }
+
   public static HangmanGame create(String word, Difficulty difficulty) {
     return new HangmanGame(word, Set.of(), 0, difficulty.maxErrors(), new InProgress());
   }
